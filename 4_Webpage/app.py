@@ -26,6 +26,12 @@ print(X.shape, y.shape)
 #train test split
 user1 = 9
 user2 = 254
+user3 = 6
+user4 = 7
+user5 = 8
+user6 = 9
+user7 = 945
+user8 = 253
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 regr = make_pipeline(StandardScaler(),LinearSVR(random_state=23, tol=1e-5))
 regr.fit(X, y)
@@ -64,7 +70,13 @@ def send():
         name = request.form["petName"]
         user1 = request.form["petLat"]
         user2 = request.form["petLon"]
-        final_pred = regr.predict([[user1,user2]])
+        user3 = request.form["user3"]
+        user4 = request.form["user4"]
+        user5 = request.form["user5"]
+        user6 = request.form["user6"]
+        user7 = request.form["user7"]
+        user8 = request.form["user8"]
+        final_pred = regr.predict([[user1,user2,user3,user4,user5,user6,user7,user8]])
         final = [value for value in final_pred]
         print(final)
         return str(final)
