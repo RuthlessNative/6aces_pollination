@@ -45,7 +45,7 @@ user8 = 253
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 regr = make_pipeline(StandardScaler(),LinearSVR(random_state=23, tol=1e-5))
 regr.fit(X, y)
-final_pred = regr.predict([[user1,user2]])
+final_pred = regr.predict([[user1,user2,user3,user4,user5,user6,user7,user8]])
 final = [value for value in final_pred]
 
 #################################################
