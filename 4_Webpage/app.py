@@ -1,4 +1,4 @@
-from models import create_classes
+# from models import create_classes
 import os
 from flask import (
     Flask,
@@ -17,7 +17,17 @@ from sklearn.pipeline import make_pipeline
 honey = "static/data/hp_prod_19.csv"
 df1 = pd.read_csv(honey)
 df1 = df1[df1['state']!='United States']
-X = df1[['max_h_prod_cny','prod_held_stocks']]
+stress = "../2_Transform/hbcny_stress_19.csv"
+df2 = pd.read_csv(stress)
+df2 = df2[df2['state']!='Connecticut']
+df2 = df2[df2['state']!='Maryland']
+df2 = df2[df2['state']!='Massachusetts']
+df2 = df2[df2['state']!='Oklahoma']
+df2 = df2[df2['state']!='New Mexico']
+df2 = df2[df2['state']!='Other States']
+df1 = df1.merge(df2, left_on='state', right_on='state', suffixes=('_hb', '_stress'))
+X = df1[['max_h_prod_cny','prod_held_stocks','v_mites', 'other_pest_para', 'diseases',
+         'pesticides','other','unknown']].astype(int)
 y = df1['yield/cny'].astype(int)
 feature_names = X
 print(X.shape, y.shape)
