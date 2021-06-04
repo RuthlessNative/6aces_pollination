@@ -14,7 +14,7 @@ from sklearn.svm import LinearSVR
 from sklearn.pipeline import make_pipeline
 
 #Loading in and cleaning data
-honey = "static/hp_prod_19.csv"
+honey = "static/data/hp_prod_19.csv"
 df1 = pd.read_csv(honey)
 df1 = df1[df1['state']!='United States']
 X = df1[['max_h_prod_cny','prod_held_stocks']]
