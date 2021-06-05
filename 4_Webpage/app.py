@@ -4,8 +4,7 @@ from flask import (
     Flask,
     render_template,
     jsonify,
-    request,
-    redirect)
+    request)
 # import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -14,10 +13,10 @@ from sklearn.svm import LinearSVR
 from sklearn.pipeline import make_pipeline
 
 #Loading in and cleaning data
-honey = "static/data/hp_prod_19.csv"
+honey = "static/hp_prod_19.csv"
 df1 = pd.read_csv(honey)
 df1 = df1[df1['state']!='United States']
-stress = "../2_Transform/hbcny_stress_19.csv"
+stress = "static/hbcny_stress_19.csv"
 df2 = pd.read_csv(stress)
 df2 = df2[df2['state']!='Connecticut']
 df2 = df2[df2['state']!='Maryland']
@@ -67,46 +66,45 @@ db = SQLAlchemy(app)
 
 Pet = create_classes(db)
 
-# create route that renders index.html template
+# create route that renders index.html conties-pie.html test.html template
 @app.route("/")
 def home():
     return render_template("index.html")
 
+@app.route("/conties-pie.html")
+def map():
+    return render_template("conties-pie.html")
+
+@app.route("/test.html")
+def tableau():
+    return render_template("test.html")
 
 # Query the database and send the jsonified results
-@app.route("/send", methods=["GET", "POST"])
+@app.route("/form.html", methods=["GET", "POST"])
 def send():
-    if request.method == "POST":
-        name = request.form["petName"]
-        user1 = request.form["petLat"]
-        user2 = request.form["petLon"]
-        user3 = request.form["user3"]
-        user4 = request.form["user4"]
-        user5 = request.form["user5"]
-        user6 = request.form["user6"]
-        user7 = request.form["user7"]
-        user8 = request.form["user8"]
-        final_pred = regr.predict([[user1,user2,user3,user4,user5,user6,user7,user8]])
-        final = [value for value in final_pred]
-        print(final)
-        return str(final)
+       
     return render_template("form.html")
 
-@app.route("/api/prediction")
+@app.route("/send", methods=["POST"])
 def pals():
+    name = request.form["petName"]
+    user1 = request.form["petLat"]
+    user2 = request.form["petLon"]
+    user3 = request.form["user3"]
+    user4 = request.form["user4"]
+    user5 = request.form["user5"]
+    user6 = request.form["user6"]
+    user7 = request.form["user7"]
+    user8 = request.form["user8"]
+    final_pred = regr.predict([[user1,user2,user3,user4,user5,user6,user7,user8]])
+    final = [value for value in final_pred]
+    final = str(final)
 
-    pred_honey = [{
+    pred_honey = {
+    
         "type": "yield of honey",
-        "final_pred": final,
-        "hoverinfo": "text",
-        "marker": {
-            "size": 50,
-            "line": {
-                "color": "rgb(8,8,8)",
-                "width": 1
-            },
-        }
-    }]
+        "final_pred": final
+    }
 
     return jsonify(pred_honey)
 
